@@ -44,7 +44,7 @@ Miro's upload endpoint takes only jpeg, png and svg, and Miro cannot pull WebP b
 
 The format is read from the file's first bytes, not the server's Content-Type.
 
-## Links, Videos and Pages (1.8.4)
+## Links, Videos and Pages (1.8.8)
 
 The same right-click item works on more than images. What gets added depends on where you click:
 
@@ -93,12 +93,11 @@ the video and product page in its two fields through the same code as a right-cl
 probe row above the start position, without moving the layout cursor, and reports what Miro
 returned. `刪除測試卡片` removes only the items that button created.
 
-The test also adds a third, trial card (1.8.4): the not-open fallback — an embed with the page's
-share image — placed right of Miro's own card for comparison, since its height can be set at
-creation. Miro's own card cannot be made `圖片高度` tall by any route tried on 2026-10-24: the
-Web SDK (an embed, size read-only), REST (a geometry PATCH answers 200 and changes nothing), or
-zooming the board before pasting (the card comes out the same size). A `createPreview` card
-could be resized but shows no picture.
+Miro's own card is kept even though it cannot be made `圖片高度` tall by any route tried on
+2026-10-24: the Web SDK (an embed, size read-only), REST (a geometry PATCH answers 200 and changes
+nothing), or zooming the board before pasting (the card comes out the same size). The alternatives
+were worse: a `createPreview` card can be resized but shows no picture, and an embed with the
+page's share image has no title or description.
 
 An image that is itself a link to a non-video page is still added as an image. To add that
 page instead, right-click the text link, empty space, or use the toolbar icon's menu.

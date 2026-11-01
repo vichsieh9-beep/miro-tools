@@ -1379,32 +1379,6 @@ async function runLinkTest({ video, page } = {}) {
     }
   }
 
-  // Trial: the fallback used when the board is not open — an embed carrying the page's share
-  // image (og:image) — made on purpose so it can be compared with Miro's own card. Its height
-  // is set at creation, so unlike the pasted card it comes out imageHeight tall.
-  const trialUrl = page || DEFAULT_TEST_LINKS.page;
-  lines.push("", `── 試做嵌入卡＋預覽圖：${trialUrl}`);
-  try {
-    const meta = await getPageMeta(trialUrl, null);
-    if (!meta.image) {
-      lines.push("結果：沒做，讀不到這一頁的分享圖（og:image）。");
-    } else {
-      const ratio = meta.imageWidth > 0 && meta.imageHeight > 0 ? meta.imageWidth / meta.imageHeight : 16 / 9;
-      const { created, width } = await createEmbed({ settings, data: { url: trialUrl, mode: "modal", previewUrl: meta.image }, ratio, left, top });
-      made.push({ boardId: settings.boardId, endpoint: "embeds", id: created?.id, label: "試做嵌入卡＋預覽圖" });
-      lines.push(
-        `結果：成功 ✅，寬 ${Math.round(width)} × 高 ${Math.round(toNumber(created?.geometry?.height, settings.imageHeight))}（圖片高 ${settings.imageHeight}）`,
-        `預覽圖：${meta.image}`,
-        `在 Miro 打開：${boardLink({ id: settings.boardId })}?moveToWidget=${created?.id}`
-      );
-    }
-  } catch (error) {
-    if (isAccessError(error)) {
-      throw error;
-    }
-    lines.push(`結果：失敗 ❌，${error instanceof Error ? error.message : String(error)}`);
-  }
-
   const { testLinkItems } = await chrome.storage.local.get({ testLinkItems: [] });
   await chrome.storage.local.set({ testLinkItems: [...testLinkItems, ...made.filter((item) => item.id)] });
 
@@ -1413,7 +1387,6 @@ async function runLinkTest({ video, page } = {}) {
     "去板上看：影片應該跟手動貼網址一樣，上面有 YouTube 標題、按下去能播放；",
     "網頁：Miro 板子有開著時，應該跟你手動貼網址一模一樣（圖、標題、說明），並排進同一排；",
     "沒開著時是一個有預覽圖的嵌入卡，或沒分享圖時的文字卡片。不管哪種都只有一個物件、點了能開網頁。",
-    "試做嵌入卡＋預覽圖：排在商品頁原生卡的右邊，跟圖片同高、只有分享圖沒有標題說明，點了在 Miro 裡開網頁。",
     "看完按「刪除測試卡片」把這幾張移掉。"
   );
 

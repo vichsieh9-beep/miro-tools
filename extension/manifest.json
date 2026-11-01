@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Add to My Miro",
   "description": "Right-click a web image, link, video or page and add it to one of your saved Miro boards.",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "permissions": [
     "contextMenus",
     "storage",
