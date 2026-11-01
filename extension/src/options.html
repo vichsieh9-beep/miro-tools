@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add to My Miro Settings</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <main>
+      <h1>Add to My Miro</h1>
+
+      <section>
+        <h2>我的板子 <small>點哪塊就切到哪塊</small></h2>
+        <div id="boards" class="chips"></div>
+        <p id="currentBoard" class="hint"></p>
+      </section>
+
+      <section>
+        <h2>新增板子</h2>
+        <div class="addrow">
+          <input id="newBoardUrl" type="url" placeholder="貼上 Miro 板子網址" autocomplete="off">
+          <button id="addBoard">加入</button>
+        </div>
+        <p id="addMessage" class="toast" hidden></p>
+        <p class="hint">加入前會先用下方 Token 檢查能不能存取，板名自動從 Miro 帶入；加入後直接切成使用中。</p>
+      </section>
+
+      <section>
+        <label>
+          <span>Access Token <small>所有板子共用</small></span>
+          <input id="accessToken" type="password" placeholder="Miro OAuth token with boards:write" autocomplete="off">
+        </label>
+      </section>
+
+      <section>
+        <h2>排版 <small>所有板子共用</small></h2>
+        <div class="grid">
+          <label>
+            起始 X
+            <input id="startX" type="number" step="10">
+          </label>
+          <label>
+            起始 Y
+            <input id="startY" type="number" step="10">
+          </label>
+          <label>
+            每排張數
+            <input id="columns" type="number" min="1" step="1">
+          </label>
+          <label>
+            圖片高度
+            <input id="imageHeight" type="number" min="20" step="10">
+          </label>
+          <label>
+            圖片間距
+            <input id="gap" type="number" min="0" step="10">
+          </label>
+        </div>
+        <p class="hint">每張圖統一縮到「圖片高度」，寬度依原圖比例，下一張自動接在前一張右邊，中間留「圖片間距」。</p>
+      </section>
+
+      <section>
+        <h2>目前位置 <small id="positionFor"></small></h2>
+        <div class="grid">
+          <label>
+            下一張 X
+            <input id="cursorX" type="number" step="10">
+          </label>
+          <label>
+            下一張 Y
+            <input id="cursorY" type="number" step="10">
+          </label>
+          <label>
+            本排已放
+            <input id="rowCount" type="number" min="0" step="1">
+          </label>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button id="save">儲存</button>
+        <button id="validate" type="button">測試設定</button>
+        <button id="diagnose" type="button">診斷</button>
+        <button id="testUpload" type="button">測試加圖</button>
+        <button id="resetPosition" type="button">位置歸零</button>
+      </div>
+
+      <section class="linktest">
+        <h2>測試加網址 <small>放在起始位置上方那一排，不影響排版位置</small></h2>
+        <div class="grid two">
+          <label>
+            影片網址
+            <input id="testVideoUrl" type="url" value="https://www.youtube.com/watch?v=jNQXAC9IVRw" autocomplete="off">
+          </label>
+          <label>
+            網頁網址
+            <input id="testPageUrl" type="url" value="https://www.pinterest.com/pin/904097693963053625/" autocomplete="off">
+          </label>
+        </div>
+        <label>
+          GIF 網址
+          <input id="testGifUrl" type="url" value="https://upload.wikimedia.org/wikipedia/commons/d/d3/Newtons_cradle_animation_book_2.gif" autocomplete="off">
+        </label>
+        <div class="actions">
+          <button id="testLinks" type="button">測試加網址</button>
+          <button id="testGif" type="button">測試 GIF</button>
+          <button id="deleteTestLinks" type="button">刪除測試卡片</button>
+        </div>
+        <p class="hint">用跟右鍵完全相同的流程，把上面兩個網址貼進使用中的板子，下方列出 Miro 實際回了什麼。「測試 GIF」會用兩條路各放一張動圖（再上面一排，要先開著這塊 Miro 板子），到板上看哪幾張會動。看完按「刪除測試卡片」，只會刪這裡建立的那幾張。</p>
+      </section>
+
+      <section>
+        <h2>搬移設定 <small>換資料夾載入時用</small></h2>
+        <div class="actions">
+          <button id="exportSettings" type="button">匯出設定</button>
+          <button id="importSettings" type="button">匯入設定</button>
+          <input id="importFile" type="file" accept="application/json,.json" hidden>
+        </div>
+        <p class="hint">匯出板子清單、各板位置和排版設定，不含 Token；匯入後 Token 要重新貼上。</p>
+      </section>
+
+      <p id="status" role="status"></p>
+      <p id="lastResult"></p>
+      <pre id="report" hidden></pre>
+    </main>
+
+    <script src="boards.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
